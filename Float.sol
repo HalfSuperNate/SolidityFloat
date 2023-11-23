@@ -2,7 +2,15 @@
 pragma solidity ^0.8.23;
 
 contract Float {
-    function toFloat(uint256 prefix, uint256 suffix) external pure returns (string memory) {
+    function uintToFloat(uint256 number, uint256 decimals) external pure returns (string memory) {
+        require(decimals <= 18, "Decimals too large");
+        uint256 prefix = number / (10**decimals);
+        uint256 suffix = number - (prefix * (10**decimals));
+        
+        return toFloat(prefix, suffix);
+    }
+
+    function toFloat(uint256 prefix, uint256 suffix) public pure returns (string memory) {
         return string(abi.encodePacked(uintToString(prefix), ".", uintToString(suffix)));
     }
 
